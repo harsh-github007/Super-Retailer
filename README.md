@@ -1,54 +1,117 @@
-# Super-Retailer
-# Power BI Project for Super Retailer
+# Super Retailer: Power BI Sales Report
 
-This repository contains the code and resources for a Power BI project that I had the opportunity to work on. The project aimed to provide valuable insights for our client, a super retailer, to support their business expansion efforts. By leveraging advanced analytics techniques, we explored various avenues for expansion, identified opportunities for revenue growth, and assessed the profit potential of different strategies.
+A five-page Power BI report on the sales of two Australian clothing chains, **Ready Wear** and **Bellings**, from January 2016 to August 2017. It covers revenue, profit and margin by time, category, state and store manager, plus a what-if simulator for price and volume changes. It is built on a public practice dataset, **SuperRetailerData**.
 
-## Project Overview
+The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Opening it needs [Power BI Desktop](https://powerbi.microsoft.com/desktop/), which runs on Windows. On a Mac, upload it to the Power BI web service, or use a Windows virtual machine.
 
-The goal of this project was to empower our client with data-driven decision-making capabilities. By analyzing the available data, we aimed to uncover key patterns, trends, and correlations that could guide the client's business expansion plans. Using Power BI, a powerful business intelligence tool, we developed interactive dashboards and visualizations that presented the insights in a clear and accessible manner.
+## Key figures
 
-## Key Features
+All figures below were recalculated from the data inside the report.
 
-- **Data Analysis**: We performed in-depth analysis of the client's data, combining various data sources to gain a comprehensive understanding of their business landscape. This involved cleaning and transforming the data, as well as conducting exploratory data analysis to identify relevant patterns.
+| | |
+| --- | --- |
+| Revenue, Jan 2016 – Aug 2017 | **$60.8M** |
+| Profit | **$25.9M** (42.5% margin) |
+| Only complete financial year (Jul 2016 – Jun 2017) | $36.3M revenue, $15.6M profit |
+| Growth, Jan–Aug 2017 vs Jan–Aug 2016 | **+16.3%** revenue |
 
-- **Advanced Analytics**: Leveraging advanced analytics techniques such as predictive modeling, segmentation, and forecasting, we went beyond basic descriptive analytics to provide actionable insights. These techniques allowed us to identify growth opportunities, prioritize target markets, and estimate the potential profitability of different expansion strategies.
+- **Ready Wear is the bigger chain:** 71% of revenue, though at a slightly lower margin than Bellings (41.9% vs 43.9%).
+- **Menswear leads**, with 20% of revenue. Groceries (27%) and Home (34%) earn the thinnest margins, well below every clothing category (40–49%).
+- **New South Wales brings in 37% of revenue**, Victoria 24% and Queensland 20%.
 
-- **Interactive Dashboards**: We built interactive and user-friendly dashboards using Power BI, enabling our client to explore the insights and customize visualizations based on their specific needs. The dashboards provided a holistic view of the data, allowing for deep dives into different aspects of the business.
+## Report pages
 
-## Repository Structure
+| Page | What it shows |
+| --- | --- |
+| **Overall summary** | Revenue, profit and margin cards; revenue against target over time; revenue and profit by financial quarter; revenue by chain; units by category; a map of revenue by state; slicers for financial year and state |
+| **Date-wise analysis** | Each month's revenue against its target as a waterfall; year-to-date revenue; year-on-year change by month |
+| **Category deep dive** | Every category plotted by revenue against margin, sized by units, with a play axis that steps through the quarters |
+| **Manager performance** | Revenue by store manager (21 managers), drilling down to suburb |
+| **Price simulation** | Sliders for a change in price (±20%) and in units sold (±40%), comparing current and simulated revenue by category, with average sale price |
 
-The repository is organized as follows:
+## Data model
 
-- `data`: This directory contains the raw data used in the project. Due to confidentiality reasons, we cannot provide the actual data. However, we have included sample datasets to showcase the structure and format.
+The data comes from one Excel workbook with five sheets, loaded with Power Query. There are about 81,000 monthly sales rows, each with a chain, postcode, category, units, sale price and cost price.
 
-- `scripts`: This directory contains any scripts or code used for data preprocessing, analysis, and modeling. The code is well-documented and provides clear explanations of the steps performed.
+```
+Sales (fact) ──Postcode──> Regions   (state, suburb)
+             ──Postcode──> Managers  (store manager)
+             ──Category──> Buyers    (category buyer)
+             ──Date──────> Dates     (month, Australian financial year Jul–Jun, FY quarter)
+```
 
-- `dashboards`: This directory contains the Power BI project files (.pbix) for the interactive dashboards developed as part of the project. You can download and open these files in Power BI Desktop to explore the visualizations and interact with the data.
+**Calculated columns** on `Sales`:
+- `Revenue = Sale Price × Total Units`
+- `Profit = (Sale Price − Cost Price) × Total Units`
 
-## Getting Started
+**Measures:**
 
-To get started with this project, follow these steps:
+```dax
+Revenue Measure    = SUMX(Sales, Sales[Total Units] * Sales[Sale Price])
+Profit Measure     = SUMX(Sales, (Sales[Sale Price] - Sales[Cost Price]) * Sales[Total Units])
+Margin %           = SUM(Sales[Profit]) / SUM(Sales[Revenue])
+Avg Sale Price     = SUM(Sales[Revenue]) / SUM(Sales[Total Units])
+Target Revenue     = CALCULATE([Revenue Measure], PREVIOUSMONTH(Dates[Date])) * 1.05
+Revenue variance   = IF(ISBLANK([Target Revenue]), BLANK(), [Revenue Measure] - [Target Revenue])
+Revenue YTD        = TOTALYTD([Revenue Measure], Dates[Date])
+Revenue LY         = CALCULATE([Revenue Measure], SAMEPERIODLASTYEAR(Dates[Date]))
+YoY revenue change = IF(ISBLANK([Revenue LY]), BLANK(), [Revenue Measure] / [Revenue LY] - 1)
+Simulated revenue  = SUMX(Sales, Sales[Sale Price] * (1 + [Price Change % Value])
+                               * Sales[Total Units] * (1 + [Units Change % Value]))
+```
 
-1. Clone the repository to your local machine using the command:
+The simulator's sliders are what-if parameter tables made with `GENERATESERIES`: −20% to +20% in 1% steps for price, and −40% to +40% in 2% steps for units.
 
-   ```shell
-   git clone https://github.com/your-username/power-bi-project.git
-   ```
+## Known issues and fixes
 
-2. Install Power BI Desktop from the official Microsoft website: [Power BI Desktop](https://powerbi.microsoft.com/desktop/)
+These are problems in the report as it stands, with the DAX to fix each one.
 
-3. Open Power BI Desktop and navigate to `File` -> `Open` to load the desired .pbix file from the `dashboards` directory.
+**1. Year-to-date resets in January, but the financial year starts in July.** `TOTALYTD` defaults to a calendar year, while the report's slicers and quarters use the Australian July–June financial year. So in August 2016 the report shows $22.4M year to date; the correct financial-year figure is $6.6M. The fix is to give the year-end date:
 
-4. Explore the dashboards, interact with the visualizations, and gain valuable insights for business expansion, revenue growth, and profit potential.
+```dax
+Revenue YTD = TOTALYTD([Revenue Measure], Dates[Date], "6/30")
+```
 
-## Contributing
+**2. The price simulator can't show the trade-off it exists for.**
+- Price and volume are separate sliders, and the volume response has to be guessed and set by hand. Nothing ties a price rise to lost sales.
+- It shows revenue only. Costs don't change with price, so profit is what moves most.
 
-Contributions to this project are not currently being accepted as it was developed for a specific client. However, feel free to fork the repository and adapt the code and resources for your own projects.
+A version that adds an elasticity parameter (how much volume falls for each 1% price rise) and reports profit:
 
-## License
+```dax
+Elasticity         = SELECTCOLUMNS(GENERATESERIES(-3, 0, 0.1), "Elasticity", [Value])   -- parameter table
+Elasticity Value   = SELECTEDVALUE(Elasticity[Elasticity], -1)
+Simulated units    = SUMX(Sales, Sales[Total Units] * POWER(1 + [Price Change % Value], [Elasticity Value]))
+Simulated revenue  = SUMX(Sales, Sales[Sale Price] * (1 + [Price Change % Value])
+                               * Sales[Total Units] * POWER(1 + [Price Change % Value], [Elasticity Value]))
+Simulated profit   = SUMX(Sales, (Sales[Sale Price] * (1 + [Price Change % Value]) - Sales[Cost Price])
+                               * Sales[Total Units] * POWER(1 + [Price Change % Value], [Elasticity Value]))
+```
 
-This project is licensed under the [MIT License](LICENSE.md). Feel free to modify and use the code and resources as per the terms of the license.
+Worked on this data, a price rise helps profit far more than revenue, and how much depends on how customers respond:
 
-## Acknowledgements
+| Price change | Customers' response (elasticity) | Revenue | Profit |
+| --- | --- | ---: | ---: |
+| +5% | none (0) | +5.0% | +11.8% |
+| +5% | proportional (−1) | 0.0% | +6.4% |
+| +5% | strong (−1.5) | −2.4% | +3.9% |
+| +10% | none (0) | +10.0% | +23.5% |
+| +10% | proportional (−1) | 0.0% | +12.3% |
+| +10% | strong (−1.5) | −4.7% | +7.1% |
 
-We would like to express our gratitude to our client, the super retailer, for providing us with the opportunity to work on this project. Their collaboration and input were instrumental in delivering valuable insights for their business expansion. We would also like to thank the open-source community for their contributions and the Power BI team at Microsoft for providing such a powerful tool for data analysis and visualization.
+**3. The revenue target is arbitrary.** `Target Revenue` is last month's revenue plus 5%. Retail sales are seasonal, so for December or January that target says more about the calendar than about performance. Using the same month last year plus a growth rate is fairer, with the rate as a what-if parameter:
+
+```dax
+Target growth       = SELECTCOLUMNS(GENERATESERIES(0, 0.2, 0.01), "Target growth", [Value])   -- parameter table
+Target Revenue      = [Revenue LY] * (1 + SELECTEDVALUE('Target growth'[Target growth], 0.05))
+```
+
+**4. Manager performance measures territory size, not performance.** Managers are ranked by total revenue, so a manager with more or bigger postcodes ranks higher regardless of how well the stores do. Revenue ranges from $5.6M to $0.7M across the 21 managers. Ranking on year-on-year growth or margin would compare them more fairly.
+
+## Data source
+
+The queries read `SuperRetailerData` from a local Excel file. To refresh the report with your own copy, go to *Transform data → Data source settings → Change source* in Power BI Desktop.
+
+## Changes from the 2023 README
+
+The earlier README described a client engagement with predictive modelling, segmentation and forecasting, and listed `data/`, `scripts/` and `dashboards/` folders and a licence file. None of these exist. The report contains descriptive analysis and a what-if simulator, and the repository holds only the report file. This README describes what is actually there.
