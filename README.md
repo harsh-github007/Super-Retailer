@@ -111,7 +111,3 @@ Target Revenue      = [Revenue LY] * (1 + SELECTEDVALUE('Target growth'[Target g
 ## Data source
 
 The queries read `SuperRetailerData` from a local Excel file. To refresh the report with your own copy, go to *Transform data → Data source settings → Change source* in Power BI Desktop.
-
-## Changes from the 2023 README
-
-The earlier README described a client engagement with predictive modelling, segmentation and forecasting, and listed `data/`, `scripts/` and `dashboards/` folders and a licence file. None of these exist. The report contains descriptive analysis and a what-if simulator, and the repository holds only the report file. This README describes what is actually there.
