@@ -4,6 +4,23 @@ A five-page Power BI report on the sales of two Australian clothing chains, **Re
 
 The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Opening it needs [Power BI Desktop](https://powerbi.microsoft.com/desktop/), which runs on Windows. On a Mac, upload it to the Power BI web service, or use a Windows virtual machine.
 
+**To see the report without Power BI:** the five pages are below, and all of them are in [`Super Retailer Report.pdf`](Super%20Retailer%20Report.pdf). These views were redrawn with Python from the data stored inside the `.pbix` file, following the same page layout. Two visuals are shown in static form: the map of revenue by state is a bar chart, and the price simulator is shown at one example setting.
+
+### Overall summary
+![Overall summary](pages/1-overall-summary.png)
+
+### Date-wise analysis
+![Date-wise analysis](pages/2-date-wise-analysis.png)
+
+### Category deep dive
+![Category deep dive](pages/3-category-deep-dive.png)
+
+### Manager performance
+![Manager performance](pages/4-manager-performance.png)
+
+### Price simulation
+![Price simulation](pages/5-price-simulation.png)
+
 ## Key figures
 
 All figures below were recalculated from the data inside the report.
