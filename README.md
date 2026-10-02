@@ -4,7 +4,7 @@ A five-page Power BI report on the sales of two Australian clothing chains, **Re
 
 The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Opening it needs [Power BI Desktop](https://powerbi.microsoft.com/desktop/), which runs on Windows. On a Mac, upload it to the Power BI web service, or use a Windows virtual machine.
 
-**To see the report without Power BI:** the five pages are below, and all of them are in [`Super Retailer Report.pdf`](Super%20Retailer%20Report.pdf). These views were redrawn with Python from the data stored inside the `.pbix` file, with a revised visual style and explicit calculation improvements. The PDF and PNG pages include July–June financial-year YTD, a prior-year-month +5% target, manager revenue alongside margin, and elasticity scenarios for revenue and profit. The original PBIX remains the original report; these improvements have not been applied to its internal model.
+**To see the report without Power BI:** the five pages are below, and all of them are in [`Super Retailer Report.pdf`](Super%20Retailer%20Report.pdf). These views were redrawn with Python from the data stored inside the `.pbix` file, with a revised visual style and explicit calculation improvements. The PDF and PNG pages include July–June financial-year YTD, a prior-year-month +5% target, manager revenue alongside margin, and elasticity scenarios for revenue and profit. The PBIX now uses the matching ivory/sage palette, softer borders and no card shadows across its five pages. Its embedded data model and calculations remain unchanged; the calculation improvements described above currently apply to the Python exports.
 
 ### Overall summary
 ![Overall summary](pages/1-overall-summary.png)
@@ -23,7 +23,7 @@ The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Op
 
 ## Revised report export
 
-The five PDF/PNG pages use an ivory, sage and warm-brown theme with consistent labels and source footers. Import [`retail-theme.json`](retail-theme.json) via **View → Themes → Browse for themes** in Power BI Desktop to apply the palette to the editable report.
+The five PDF/PNG pages use an ivory, sage and warm-brown theme with consistent labels and source footers. The editable PBIX also includes this palette and quieter visual containers. [`retail-theme.json`](retail-theme.json) is available for reuse in Power BI Desktop. The PBIX archive and all five layout pages were checked, and its embedded model was verified byte-for-byte unchanged. Opening/rendering the modified PBIX still needs verification in Power BI Desktop on Windows.
 
 - Financial-year YTD resets in July. The first financial year is partial because data starts in January 2016.
 - Revenue targets use the same month one year earlier plus 5%; no target is invented when the prior-year month is unavailable.
