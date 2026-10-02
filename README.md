@@ -11,9 +11,9 @@ The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Op
 3. To reuse the report palette, select **View → Themes → Browse for themes** and choose [`retail-theme.json`](retail-theme.json).
 4. Export the report using **File → Export → Export to PDF** when you want a static preview.
 
-The PBIX includes updated ivory/sage styling, softer borders and no card shadows. Its semantic model and calculations remain unchanged. The modified file has passed archive integrity checks; opening and rendering it in Power BI Desktop still needs verification on Windows.
+The report uses an ivory and green theme. Its model and calculations are unchanged by the styling update. The PBIX archive passes integrity checks; native rendering remains unverified until it is opened in Power BI Desktop.
 
-Native Power BI screenshots and a PDF export have not yet been generated for the updated file. The Python redraws and their scripts have been removed.
+A native PDF and page screenshots are needed for a visual preview. No reconstructed chart is presented as a Power BI screenshot.
 
 ## Key figures
 
@@ -73,51 +73,9 @@ Simulated revenue  = SUMX(Sales, Sales[Sale Price] * (1 + [Price Change % Value]
 
 The simulator's sliders are what-if parameter tables made with `GENERATESERIES`: −20% to +20% in 1% steps for price, and −40% to +40% in 2% steps for units.
 
-## Original PBIX issues and Power BI fixes
+## Calculation limits
 
-These are problems in the report as it stands, with the DAX to fix each one.
-
-**1. Year-to-date resets in January, but the financial year starts in July.** `TOTALYTD` defaults to a calendar year, while the report's slicers and quarters use the Australian July–June financial year. So in August 2016 the report shows $22.4M year to date; the correct financial-year figure is $6.6M. The fix is to give the year-end date:
-
-```dax
-Revenue YTD = TOTALYTD([Revenue Measure], Dates[Date], "6/30")
-```
-
-**2. The price simulator can't show the trade-off it exists for.**
-- Price and volume are separate sliders, and the volume response has to be guessed and set by hand. Nothing ties a price rise to lost sales.
-- It shows revenue only. Costs don't change with price, so profit is what moves most.
-
-A version that adds an elasticity parameter (how much volume falls for each 1% price rise) and reports profit:
-
-```dax
-Elasticity         = SELECTCOLUMNS(GENERATESERIES(-3, 0, 0.1), "Elasticity", [Value])   -- parameter table
-Elasticity Value   = SELECTEDVALUE(Elasticity[Elasticity], -1)
-Simulated units    = SUMX(Sales, Sales[Total Units] * POWER(1 + [Price Change % Value], [Elasticity Value]))
-Simulated revenue  = SUMX(Sales, Sales[Sale Price] * (1 + [Price Change % Value])
-                               * Sales[Total Units] * POWER(1 + [Price Change % Value], [Elasticity Value]))
-Simulated profit   = SUMX(Sales, (Sales[Sale Price] * (1 + [Price Change % Value]) - Sales[Cost Price])
-                               * Sales[Total Units] * POWER(1 + [Price Change % Value], [Elasticity Value]))
-```
-
-Worked on this data, a price rise helps profit far more than revenue, and how much depends on how customers respond:
-
-| Price change | Customers' response (elasticity) | Revenue | Profit |
-| --- | --- | ---: | ---: |
-| +5% | none (0) | +5.0% | +11.8% |
-| +5% | proportional (−1) | 0.0% | +6.4% |
-| +5% | strong (−1.5) | −2.4% | +3.9% |
-| +10% | none (0) | +10.0% | +23.5% |
-| +10% | proportional (−1) | 0.0% | +12.3% |
-| +10% | strong (−1.5) | −4.7% | +7.1% |
-
-**3. The revenue target is arbitrary.** `Target Revenue` is last month's revenue plus 5%. Retail sales are seasonal, so for December or January that target says more about the calendar than about performance. Using the same month last year plus a growth rate is fairer, with the rate as a what-if parameter:
-
-```dax
-Target growth       = SELECTCOLUMNS(GENERATESERIES(0, 0.2, 0.01), "Target growth", [Value])   -- parameter table
-Target Revenue      = [Revenue LY] * (1 + SELECTEDVALUE('Target growth'[Target growth], 0.05))
-```
-
-**4. Manager performance measures territory size, not performance.** Managers are ranked by total revenue, so a manager with more or bigger postcodes ranks higher regardless of how well the stores do. Revenue ranges from $5.6M to $0.7M across the 21 managers. Ranking on year-on-year growth or margin would compare them more fairly.
+The current YTD measure resets in January, although the report uses a July–June financial year. Price and volume are independent assumptions in the simulator, and the revenue target is prior-month revenue plus 5%. Manager revenue totals reflect territory size as well as performance. [Calculation notes](docs/calculation-notes.md) explain these limits and show proposed DAX changes.
 
 ## Data source
 
