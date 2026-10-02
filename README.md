@@ -4,42 +4,16 @@ A five-page Power BI report on the sales of two Australian clothing chains, **Re
 
 The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Opening it needs [Power BI Desktop](https://powerbi.microsoft.com/desktop/), which runs on Windows. On a Mac, upload it to the Power BI web service, or use a Windows virtual machine.
 
-**To see the report without Power BI:** the five pages are below, and all of them are in [`Super Retailer Report.pdf`](Super%20Retailer%20Report.pdf). These views were redrawn with Python from the data stored inside the `.pbix` file, with a revised visual style and explicit calculation improvements. The PDF and PNG pages include July–June financial-year YTD, a prior-year-month +5% target, manager revenue alongside margin, and elasticity scenarios for revenue and profit. The PBIX now uses the matching ivory/sage palette, softer borders and no card shadows across its five pages. Its embedded data model and calculations remain unchanged; the calculation improvements described above currently apply to the Python exports.
+## Open and edit in Power BI
 
-## Report preview
+1. Download and open [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix) in Power BI Desktop.
+2. Use the report tabs, slicers and what-if parameters to explore the five pages.
+3. To reuse the report palette, select **View → Themes → Browse for themes** and choose [`retail-theme.json`](retail-theme.json).
+4. Export the report using **File → Export → Export to PDF** when you want a static preview.
 
-### Overall summary
-![Overall summary](pages/1-overall-summary.png)
+The PBIX includes updated ivory/sage styling, softer borders and no card shadows. Its semantic model and calculations remain unchanged. The modified file has passed archive integrity checks; opening and rendering it in Power BI Desktop still needs verification on Windows.
 
-### Date-wise analysis
-![Date-wise analysis](pages/2-date-wise-analysis.png)
-
-### Category deep dive
-![Category deep dive](pages/3-category-deep-dive.png)
-
-### Manager performance
-![Manager performance](pages/4-manager-performance.png)
-
-### Price simulation
-![Price simulation](pages/5-price-simulation.png)
-
-## Revised report export
-
-The five PDF/PNG pages use an ivory, sage and warm-brown theme with consistent labels and source footers. The editable PBIX also includes this palette and quieter visual containers. [`retail-theme.json`](retail-theme.json) is available for reuse in Power BI Desktop. The PBIX archive and all five layout pages were checked, and its embedded model was verified byte-for-byte unchanged. Opening/rendering the modified PBIX still needs verification in Power BI Desktop on Windows.
-
-- Financial-year YTD resets in July. The first financial year is partial because data starts in January 2016.
-- Revenue targets use the same month one year earlier plus 5%; no target is invented when the prior-year month is unavailable.
-- Manager revenue is shown beside margin, sorted by margin. Product mix and territory size still prevent causal performance claims.
-- Price scenarios show both revenue and profit under elasticity 0, −1 and −1.5. These are assumptions, not estimated demand responses.
-
-Reproduce the export:
-
-```bash
-pip install pbixray pandas matplotlib
-python scripts/render_pages.py
-```
-
-The assertions check July YTD resets and constant revenue under elasticity −1. The DAX below remains guidance for implementing equivalent changes in Power BI Desktop.
+Native Power BI screenshots and a PDF export have not yet been generated for the updated file. The Python redraws and their scripts have been removed.
 
 ## Key figures
 
@@ -61,10 +35,10 @@ All figures below were recalculated from the data inside the report.
 | Page | What it shows |
 | --- | --- |
 | **Overall summary** | Revenue, profit and margin cards; revenue against target over time; revenue and profit by financial quarter; revenue by chain; units by category; a map of revenue by state; slicers for financial year and state |
-| **Date-wise analysis** | Revenue gap vs prior-year-month +5%; financial-year YTD; year-on-year change by month |
+| **Date-wise analysis** | Monthly revenue against target, year-to-date revenue and year-on-year change |
 | **Category deep dive** | Every category plotted by revenue against margin, sized by units, with a play axis that steps through the quarters |
-| **Manager performance** | Revenue and margin for 21 managers, sorted by margin in the export; the PBIX drills down to suburb |
-| **Price simulation** | Export: revenue and profit curves under three elasticity assumptions. Original PBIX: independent price and volume sliders |
+| **Manager performance** | Revenue by manager, with suburb drill-down |
+| **Price simulation** | Independent price and volume what-if sliders |
 
 ## Data model
 
