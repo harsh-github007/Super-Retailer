@@ -6,6 +6,18 @@ The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Op
 
 **To see the report without Power BI:** the five pages are below, and all of them are in [`Super Retailer Report.pdf`](Super%20Retailer%20Report.pdf). These views were redrawn with Python from the data stored inside the `.pbix` file, following the same page layout. Two visuals are shown in static form: the map of revenue by state is a bar chart, and the price simulator is shown at one example setting.
 
+## Interactive website
+
+[Open the website](https://harsh-github007.github.io/Super-Retailer/)
+
+![Retail report workspace](assets/screenshot.jpg)
+
+The website presents all five saved report pages with page navigation, original PDF/PBIX downloads, and an illustrative browser what-if studio. Price and volume are independent assumptions; the scenario uses the rounded $60.8M revenue and $25.9M profit baseline, keeps unit costs fixed, and is not a demand forecast. This does not change the original Power BI report. The generated boutique artwork is decorative.
+
+```bash
+python -m http.server 4185
+```
+
 ### Overall summary
 ![Overall summary](pages/1-overall-summary.png)
 
