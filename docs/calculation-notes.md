@@ -45,4 +45,3 @@ Target Revenue      = [Revenue LY] * (1 + SELECTEDVALUE('Target growth'[Target g
 ```
 
 **4. Manager performance measures territory size, not performance.** Managers are ranked by total revenue, so a manager with more or bigger postcodes ranks higher regardless of how well the stores do. Revenue ranges from $5.6M to $0.7M across the 21 managers. Ranking on year-on-year growth or margin would compare them more fairly.
-
