@@ -13,67 +13,39 @@
   <meta name="twitter:card" content="summary_large_image">
   <title>Super Retailer Sales Report</title>
   <meta name="description" content="A five-page Power BI report on two Australian clothing chains: revenue, profit and margin by month, category, state and store manager, with a price simulator.">
-  <meta name="theme-color" content="#0b0b0c">
+  <meta name="theme-color" content="#f2eee7">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23ff4400'/><rect x='7' y='16' width='4' height='9' fill='white'/><rect x='14' y='10' width='4' height='15' fill='white'/><rect x='21' y='13' width='4' height='12' fill='white'/></svg>">
-  <style>
-    :root { --bg:#0b0b0c; --surface:#141416; --line:#26262a; --line2:#33333a; --ink:#f4f4f5; --muted:#9a9aa3; --accent:#ff4400; --accent2:#ff8a3d;
-      --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; color-scheme: dark; }
-    * { box-sizing: border-box; }
-    body { margin:0; background:var(--bg); color:var(--ink); font:400 16px/1.6 var(--sans); -webkit-font-smoothing:antialiased; }
-    a { color:var(--accent2); }
-    .wrap { max-width:1160px; margin:0 auto; padding:0 16px; }
-    .top { position:relative; overflow:hidden; border-bottom:1px solid var(--line); padding:72px 0 56px; }
-    .top::before { content:""; position:absolute; inset:0; background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px); background-size:56px 56px; -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 30%,#000 30%,transparent 75%); mask-image:radial-gradient(ellipse 80% 70% at 50% 30%,#000 30%,transparent 75%); opacity:.55; }
-    .top::after { content:""; position:absolute; width:640px; height:640px; right:-220px; top:-260px; background:radial-gradient(circle,rgba(255,68,0,.3),transparent 62%); }
-    .top .wrap { position:relative; z-index:1; }
-    .label { font:500 12px/1 var(--mono); text-transform:uppercase; letter-spacing:.12em; color:var(--accent2); }
-    h1 { font-size:clamp(36px,6vw,68px); line-height:1.02; letter-spacing:-.045em; margin:18px 0 16px; max-width:900px; }
-    h1 em { font-style:normal; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .lede { color:var(--muted); font-size:clamp(15px,1.5vw,18px); max-width:720px; margin:0; }
-    .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:40px; border:1px solid var(--line); border-radius:16px; background:rgba(20,20,22,.7); }
-    .stat { padding:18px 20px; border-left:1px solid var(--line); } .stat:first-child { border-left:0; }
-    .stat b { display:block; font-size:28px; letter-spacing:-.03em; } .stat span { color:var(--muted); font-size:13px; }
-    .links { display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
-    .btn { display:inline-flex; padding:11px 18px; border-radius:999px; border:1px solid var(--line2); color:var(--ink); text-decoration:none; font-size:15px; }
-    .btn.primary { background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
-    main { counter-reset:p; padding:40px 0 24px; }
-    section { background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:22px; margin-bottom:16px; }
-    h2 { font-size:22px; letter-spacing:-.02em; margin:0 0 14px; }
-    h2::before { counter-increment:p; content:"[ " counter(p,decimal-leading-zero) " ]"; display:block; font:500 11px/1 var(--mono); letter-spacing:.12em; color:var(--accent2); margin-bottom:10px; }
-    section img { display:block; width:100%; height:auto; border-radius:12px; background:#fff; }
-    section p { color:var(--muted); margin:12px 0 0; font-size:15px; }
-    .foot { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--muted); font-size:14px; border-top:1px solid var(--line); padding:24px 16px 40px; }
-    @media (max-width:700px) { .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .stat:nth-child(3) { border-left:0; } .stat:nth-child(n+3) { border-top:1px solid var(--line); } .top { padding:48px 0 36px; } section { padding:14px; border-radius:16px; } }
-  </style>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
-  <header class="top"><div class="wrap">
-    <span class="label">[ Power BI · retail sales · 2016–2017 ]</span>
-    <h1>Super Retailer<br><em>sales report.</em></h1>
-    <p class="lede">A five-page Power BI report on two Australian clothing chains, Ready Wear and Bellings: revenue, profit and margin by month, category, state and store manager, with a price simulator.</p>
+<body><a class="skip" href="#report">Skip to report</a><nav class="navigation" aria-label="Main navigation"><a class="brand" href="#top">S / <strong>Super Retailer</strong></a><div><a href="#report">Report</a><a href="#simulation">What-if studio</a><a href="#context">Data & context</a><a href="https://github.com/harsh-github007/Super-Retailer">GitHub ↗</a></div></nav>
+  <header class="top" id="top"><div class="wrap">
+    <span class="label">TWO CHAINS / ONE CLEARER PICTURE</span>
+    <h1>The business<br>behind <em>the basket.</em></h1>
+    <p class="lede">Explore Ready Wear and Bellings through revenue, margin and the decisions that shape them. A historical Australian retail study, January 2016–August 2017.</p>
     <div class="stats">
       <div class="stat"><b>$60.8M</b><span>revenue, Jan 2016 – Aug 2017</span></div>
       <div class="stat"><b>42.5%</b><span>profit margin</span></div>
       <div class="stat"><b>+16.3%</b><span>revenue growth, Jan–Aug 2017</span></div>
       <div class="stat"><b>81K</b><span>monthly sales rows</span></div>
     </div>
-    <div class="links">
-      <a class="btn primary" href="Super%20Retailer%20Report.pdf">Report as PDF</a>
+    <div class="links"><a class="btn primary" href="#report">Explore the report ↗</a>
+      <a class="btn" href="Super%20Retailer%20Report.pdf">Report as PDF</a>
       <a class="btn" href="Super%20Retailer%20Report.pbix">Power BI file (.pbix)</a>
       <a class="btn" href="https://github.com/harsh-github007/Super-Retailer">Data model and DAX on GitHub</a>
     </div>
   </div></header>
-  <main class="wrap">
-    <section><h2>Overall summary</h2><img src="pages/1-overall-summary.png" alt="Revenue, profit and margin cards, revenue against target by month, revenue by chain, units by category, revenue by quarter and by state" loading="lazy"><p>Revenue, profit and margin; revenue against target; revenue by chain, quarter and state; units by category.</p></section>
-    <section><h2>Date-wise analysis</h2><img src="pages/2-date-wise-analysis.png" alt="Waterfall of monthly revenue against target, year-to-date revenue and year-on-year change" loading="lazy"><p>Each month against its target, year-to-date revenue and year-on-year change.</p></section>
-    <section><h2>Category deep dive</h2><img src="pages/3-category-deep-dive.png" alt="Categories plotted by revenue and margin, sized by units" loading="lazy"><p>Every category by revenue and margin, sized by units sold. In Power BI this animates through the quarters.</p></section>
-    <section><h2>Manager performance</h2><img src="pages/4-manager-performance.png" alt="Revenue by store manager" loading="lazy"><p>Revenue for each of the 21 store managers. In Power BI it drills down to suburb.</p></section>
-    <section><h2>Price simulation</h2><img src="pages/5-price-simulation.png" alt="Current and simulated revenue by category" loading="lazy"><p>Current against simulated revenue by category, shown here at price +10% and units −10%. In Power BI both are sliders.</p></section>
-    <p style="color:var(--muted);font-size:14px">These views were redrawn with Python from the data inside the .pbix file, following the report's page layout.</p>
+  <main class="wrap"><div class="report-intro" id="report"><div><span class="label">01 / THE REPORT</span><h2>From overview<br>to the details.</h2></div><p>Five views of the same business.<br>Historical report pages, redrawn from the Power BI data.</p></div><div class="report-nav" role="group" aria-label="Report page"><button type="button" data-page="0" aria-pressed="true" aria-controls="page-0">Overview</button><button type="button" data-page="1" aria-pressed="false" aria-controls="page-1">Over time</button><button type="button" data-page="2" aria-pressed="false" aria-controls="page-2">Categories</button><button type="button" data-page="3" aria-pressed="false" aria-controls="page-3">Managers</button><button type="button" data-page="4" aria-pressed="false" aria-controls="page-4">Price simulation</button></div>
+    <section class="report-page" id="page-0"><h2>Overall summary</h2><img src="pages/1-overall-summary.png" alt="Revenue, profit and margin cards, revenue against target by month, revenue by chain, units by category, revenue by quarter and by state" loading="lazy"><p>Revenue, profit and margin; revenue against target; revenue by chain, quarter and state; units by category.</p></section>
+    <section class="report-page" id="page-1" hidden><h2>Date-wise analysis</h2><img src="pages/2-date-wise-analysis.png" alt="Waterfall of monthly revenue against target, year-to-date revenue and year-on-year change" loading="lazy"><p>Each month against its target, year-to-date revenue and year-on-year change.</p></section>
+    <section class="report-page" id="page-2" hidden><h2>Category deep dive</h2><img src="pages/3-category-deep-dive.png" alt="Categories plotted by revenue and margin, sized by units" loading="lazy"><p>Every category by revenue and margin, sized by units sold. In Power BI this animates through the quarters.</p></section>
+    <section class="report-page" id="page-3" hidden><h2>Manager performance</h2><img src="pages/4-manager-performance.png" alt="Revenue by store manager" loading="lazy"><p>Revenue for each of the 21 store managers. In Power BI it drills down to suburb.</p></section>
+    <section class="report-page" id="page-4" hidden><h2>Price simulation</h2><img src="pages/5-price-simulation.png" alt="Current and simulated revenue by category" loading="lazy"><p>Current against simulated revenue by category, shown here at price +10% and units −10%. In Power BI both are sliders.</p></section>
+    <p class="caption">These views were redrawn with Python from the data inside the .pbix file, following the report's page layout.</p>
+<section class="simulator" id="simulation"><div><span class="label">02 / WHAT-IF STUDIO</span><h2>Small changes.<br><em>Different outcomes.</em></h2><p>Try a uniform price and volume change across the historical sales. The revenue calculation follows the report’s original independent-slider formula.</p><p class="caption">Illustrative totals use the rounded $60.8M revenue and $25.9M profit reported in the study. This is a scenario, not a demand forecast. Unit costs stay fixed; price and volume are independent assumptions.</p></div><div class="simulation-controls"><label for="price">Price change <output id="priceValue" for="price">0%</output></label><input id="price" type="range" min="-20" max="20" step="1" value="0"><label for="volume">Volume change <output id="volumeValue" for="volume">0%</output></label><input id="volume" type="range" min="-40" max="40" step="2" value="0"><div class="scenario-results" aria-live="polite"><div><span>Scenario revenue</span><b id="simRevenue">$60.8M</b><small id="revenueChange">0.0% vs baseline</small></div><div><span>Scenario profit</span><b id="simProfit">$25.9M</b><small id="profitChange">0.0% vs baseline</small></div></div><button class="btn" id="reset">Reset assumptions</button></div></section><section class="context" id="context"><div><span class="label">03 / READ WITH CONTEXT</span><h2>Good decisions need<br>the full picture.</h2></div><div><details><summary>What data is this based on?</summary><p>SuperRetailerData is a public practice dataset with about 81,000 monthly sales rows. It covers two Australian chains from January 2016 to August 2017. These are historical analysis figures, not live business performance.</p></details><details><summary>Which report assumptions need care?</summary><p>The original year-to-date measure resets in January although the Australian financial year starts in July. Its target is last month plus 5%, and manager totals reflect territory size. The README documents fixes and alternative measures.</p></details><details><summary>How interactive are the report pages?</summary><p>The five report pages are static redraws of the Power BI report. The map appears as bars and the simulator screenshot shows one setting. Use the PBIX file in Power BI for slicers, quarter animation and suburb drill-down. The what-if studio above is a separate browser calculation.</p></details><a href="https://github.com/harsh-github007/Super-Retailer#known-issues-and-fixes">Read the model and documented fixes ↗</a></div></section>
   </main>
   <footer class="wrap foot"><span>Super Retailer sales report · Harsh Raj</span><a href="https://github.com/harsh-github007">github.com/harsh-github007</a></footer>
-</body>
+<script src="assets/app.js"></script></body>
 </html>
