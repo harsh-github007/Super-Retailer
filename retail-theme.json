@@ -1,0 +1,14 @@
+{
+  "name": "Super Retailer editorial",
+  "dataColors": [
+    "#455B42",
+    "#B58B55",
+    "#798A73",
+    "#786653",
+    "#A8B39F",
+    "#D3B78F"
+  ],
+  "background": "#F2EEE7",
+  "foreground": "#292E27",
+  "tableAccent": "#455B42"
+}
