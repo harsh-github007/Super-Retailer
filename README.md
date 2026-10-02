@@ -6,6 +6,18 @@ The report is [`Super Retailer Report.pbix`](Super%20Retailer%20Report.pbix). Op
 
 **To see the report without Power BI:** the five pages are below, and all of them are in [`Super Retailer Report.pdf`](Super%20Retailer%20Report.pdf). These views were redrawn with Python from the data stored inside the `.pbix` file, with a revised visual style and explicit calculation improvements. The PDF and PNG pages include July–June financial-year YTD, a prior-year-month +5% target, manager revenue alongside margin, and elasticity scenarios for revenue and profit. The PBIX now uses the matching ivory/sage palette, softer borders and no card shadows across its five pages. Its embedded data model and calculations remain unchanged; the calculation improvements described above currently apply to the Python exports.
 
+## Interactive website
+
+[Open the website](https://harsh-github007.github.io/Super-Retailer/)
+
+![Retail report workspace](assets/screenshot.jpg)
+
+The website presents all five saved report pages with page navigation, PDF/PBIX downloads, and an illustrative browser what-if studio. Price and volume are independent assumptions; the scenario uses the rounded $60.8M revenue and $25.9M profit baseline, keeps unit costs fixed, and is not a demand forecast. The browser studio does not alter the PBIX model. The generated boutique artwork is decorative.
+
+```bash
+python -m http.server 4185
+```
+
 ### Overall summary
 ![Overall summary](pages/1-overall-summary.png)
 
